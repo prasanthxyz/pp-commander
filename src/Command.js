@@ -17,9 +17,9 @@ const Command = (props) => {
                 <Col span={3}>
                     <Button
                         type='primary'
-                        disabled={props.isUnmodified}
+                        disabled={props.isUnmodified || props.isErrorDisplayed}
                         onClick={() => props.updateCommand(props.featureIndex, props.commandIndex)}>
-                        Update
+                        Save
                     </Button>
                 </Col>
                 <Col span={3}>

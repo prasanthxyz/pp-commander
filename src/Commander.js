@@ -54,6 +54,7 @@ class Commander extends React.Component {
                     featureIndex={i}
                     commandIndex={j}
                     isUnmodified={this.state.isUnmodified[i][j]}
+                    isErrorDisplayed={this.state.errorText !== ''}
                     changeCommand={this.changeCommand}
                     updateCommand={this.updateCommand}
                     deleteCommand={this.deleteCommand}
@@ -75,7 +76,7 @@ class Commander extends React.Component {
                             || this.state.originalFeatures.map(f => f.name).includes(this.state.features[i].name)
                             || this.state.features[i].name === ''}
                         onClick={() => this.updateFeatureName(i)}>
-                        Update
+                        Save
                     </Button>
                 </>
             );
@@ -123,7 +124,10 @@ class Commander extends React.Component {
     }
 
     changeFeatureName(featureIndex, newFeatureName) {
-        const errorText = (this.state.originalFeatures.map(f => f.name).includes(newFeatureName))
+        const errorText = (
+            this.state.originalFeatures[featureIndex].name != newFeatureName
+            && this.state.originalFeatures.map(f => f.name).includes(newFeatureName)
+        )
             ? 'Feature name already exists'
             : (newFeatureName === '')
                 ? 'Please enter a feature name'
@@ -139,7 +143,10 @@ class Commander extends React.Component {
     updateFeatureName(featureIndex) {
         const oldName = this.state.originalFeatures[featureIndex].name;
         const newName = this.state.features[featureIndex].name;
-        if(this.state.originalFeatures.map(f => f.name).includes(newName) || newName === '') {
+        if(
+            this.state.originalFeatures[featureIndex].name != newName
+            && this.state.originalFeatures.map(f => f.name).includes(newName) || newName === ''
+        ) {
             return;
         }
 
