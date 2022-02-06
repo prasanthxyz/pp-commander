@@ -3,7 +3,7 @@ import './Commander.css';
 import React from 'react';
 import Command from './Command';
 
-import { Button, Col, Collapse, Input, PageHeader, Popconfirm, Row } from 'antd';
+import { Alert, Button, Col, Collapse, Input, PageHeader, Popconfirm, Row } from 'antd';
 import { CaretRightOutlined } from '@ant-design/icons';
 import _ from 'lodash';
 const { Panel } = Collapse;
@@ -17,7 +17,8 @@ class Commander extends React.Component {
             features: [],
             isUnmodified: [],
             isFeatureNameUnmodified: [],
-            activeKey: -1
+            activeKey: -1,
+            errorText: '',
         };
         this.addCommand = this.addCommand.bind(this);
         this.changeFeatureName = this.changeFeatureName.bind(this);
@@ -69,7 +70,10 @@ class Commander extends React.Component {
                         onChange={(e) => this.changeFeatureName(i, e.target.value)} />
                     <div style={{width: 20}}></div>
                     <Button
-                        disabled={this.state.isFeatureNameUnmodified[i]}
+                        disabled={
+                            this.state.isFeatureNameUnmodified[i]
+                            || this.state.originalFeatures.map(f => f.name).includes(this.state.features[i].name)
+                            || this.state.features[i].name === ''}
                         onClick={() => this.updateFeatureName(i)}>
                         Update
                     </Button>
@@ -100,10 +104,14 @@ class Commander extends React.Component {
                 </Panel>
             );
         });
+        const errorAlert = (this.state.errorText === '')
+            ? <></>
+            : <Alert type='error' message={this.state.errorText} banner />
         return (
             <div className='Commander'>
                 <PageHeader title='Commander' />
                 <h1>Features</h1>
+                {errorAlert}
                 <Collapse accordion activeKey={this.state.activeKey}>
                     {features}
                 </Collapse>
@@ -115,18 +123,29 @@ class Commander extends React.Component {
     }
 
     changeFeatureName(featureIndex, newFeatureName) {
+        const errorText = (this.state.originalFeatures.map(f => f.name).includes(newFeatureName))
+            ? 'Feature name already exists'
+            : (newFeatureName === '')
+                ? 'Please enter a feature name'
+                : '';
         const newState = _.cloneDeep(this.state);
         newState.features[featureIndex].name = newFeatureName;
         const originalFeatureName = newState.originalFeatures[featureIndex].name;
         newState.isFeatureNameUnmodified[featureIndex] = (originalFeatureName === newFeatureName);
+        newState.errorText = errorText;
         this.setState(newState);
     }
 
     updateFeatureName(featureIndex) {
+        const oldName = this.state.originalFeatures[featureIndex].name;
+        const newName = this.state.features[featureIndex].name;
+        if(this.state.originalFeatures.map(f => f.name).includes(newName) || newName === '') {
+            return;
+        }
+
         const newState = _.cloneDeep(this.state);
         const data = newState.features[featureIndex];
-        const oldName = newState.originalFeatures[featureIndex].name;
-        window.featureUtils.renameFeature(oldName, data.name, data.commands);
+        window.featureUtils.renameFeature(oldName, newName, data.commands);
         newState.originalFeatures[featureIndex] = _.cloneDeep(data);
         newState.isFeatureNameUnmodified[featureIndex] = true;
         newState.isUnmodified[featureIndex].fill(true);
@@ -138,7 +157,7 @@ class Commander extends React.Component {
         const newFeature = { name: "", commands: [] };
         newState.features.push(_.cloneDeep(newFeature));
         newState.originalFeatures.push(_.cloneDeep(newFeature));
-        newState.isUnmodified.push(Array());
+        newState.isUnmodified.push([]);
         newState.isFeatureNameUnmodified.push(true);
         this.setState(newState);
     }
