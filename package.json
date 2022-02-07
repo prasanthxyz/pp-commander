@@ -23,11 +23,9 @@
     "dev": "concurrently -k \"cross-env BROWSER=none npm start\" \"npm:electron\"",
     "electron": "wait-on tcp:3000 && electron-forge start",
     "start": "react-scripts start",
-    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "package": "react-scripts build && electron-forge package",
-    "make": "react-scripts build && electron-forge make"
+    "dist": "react-scripts build && electron-builder build"
   },
   "eslintConfig": {
     "extends": [
@@ -55,39 +53,21 @@
     "@electron-forge/maker-zip": "^6.0.0-beta.63",
     "concurrently": "^7.0.0",
     "electron": "^17.0.0",
+    "electron-builder": "^22.14.13",
     "electron-devtools-installer": "^3.2.0",
     "wait-on": "^6.0.0"
   },
   "author": "Prasanth P",
   "license": "MIT",
-  "config": {
-    "forge": {
-      "packagerConfig": {
-        "icon": "src/icons/win/icon.ico",
-        "name": "PP Commander"
-      },
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "commander"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
-        }
-      ]
+  "build": {
+    "appId": "com.pp.commander",
+    "productName": "PP Commander",
+    "win": {
+      "target": "nsis",
+      "icon": "src/icons/win/icon.ico"
+    },
+    "directories": {
+      "output": "out"
     }
   }
 }
