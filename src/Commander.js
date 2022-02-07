@@ -2,6 +2,7 @@ import './Commander.css';
 
 import React from 'react';
 import Command from './Command';
+import ExecutableFeatures from './ExecutableFeatures';
 
 import { Alert, Button, Col, Collapse, Input, PageHeader, Popconfirm, Row } from 'antd';
 import { CaretRightOutlined } from '@ant-design/icons';
@@ -111,7 +112,10 @@ class Commander extends React.Component {
         return (
             <div className='Commander'>
                 <PageHeader title='Commander' />
-                <h1>Features</h1>
+                <h1>Available Features</h1>
+                <ExecutableFeatures data={this.state.originalFeatures} />
+                <div style={{ height: 25 }}></div>
+                <h1>Editor</h1>
                 {errorAlert}
                 <Collapse accordion activeKey={this.state.activeKey}>
                     {features}

@@ -32,7 +32,12 @@ const Command = (props) => {
                     </Popconfirm>
                 </Col>
                 <Col span={3}>
-                    <Button type='primary' style={{ background: '#50C878' }}>Execute</Button>
+                    <Button
+                        type='primary'
+                        onClick={() => window.featureUtils.runCommand(props.cmd)}
+                        style={{ background: '#50C878' }}>
+                        Execute
+                    </Button>
                 </Col>
             </Row>
             <div style={{ height: 5 }}></div>

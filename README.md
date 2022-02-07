@@ -7,7 +7,7 @@ Commonly used commands, like rsync scripts for HDD backups, or for encrypted con
 Features:
 ---------
 1. Create/Update/View Json config
-2. [In progress] Execute the command
+2. Execute the command
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { exec } = require('child_process')
 
 const featureDir = 'features';
 
@@ -41,3 +42,7 @@ exports.renameFeature = (oldName, newName, data) => {
     this.deleteFeature(oldName);
     this.writeFeature(newName, data);
 };
+
+exports.runCommand = (command) => {
+    exec(command, ()=>{});
+}
