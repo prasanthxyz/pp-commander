@@ -4,11 +4,13 @@ import React from 'react';
 import Command from './Command';
 import ExecutableFeatures from './ExecutableFeatures';
 
-import { Alert, Button, Col, Collapse, Input, PageHeader, Popconfirm, Row } from 'antd';
+import { Alert, Button, Col, Collapse, Input, PageHeader, Popconfirm, Row, Space, Switch } from 'antd';
 import { CaretRightOutlined } from '@ant-design/icons';
 import _ from 'lodash';
 const { Panel } = Collapse;
 
+const EDITOR = 'EDITOR';
+const VIEWER = 'VIEWER';
 
 class Commander extends React.Component {
     constructor(props) {
@@ -20,6 +22,7 @@ class Commander extends React.Component {
             isFeatureNameUnmodified: [],
             activeKey: -1,
             errorText: '',
+            visibleComponent: VIEWER,
         };
         this.addCommand = this.addCommand.bind(this);
         this.changeFeatureName = this.changeFeatureName.bind(this);
@@ -30,6 +33,7 @@ class Commander extends React.Component {
         this.addFeature = this.addFeature.bind(this);
         this.deleteFeature = this.deleteFeature.bind(this);
         this.handleCollapseClick = this.handleCollapseClick.bind(this);
+        this.toggleVisibleComponent = this.toggleVisibleComponent.bind(this);
     }
 
     componentDidMount() {
@@ -109,12 +113,16 @@ class Commander extends React.Component {
         const errorAlert = (this.state.errorText === '')
             ? <></>
             : <Alert type='error' message={this.state.errorText} banner />
-        return (
-            <div className='Commander'>
-                <PageHeader title='Commander' />
+
+        const viewerComponents = (
+            <>
                 <h1>Available Features</h1>
                 <ExecutableFeatures data={this.state.originalFeatures} />
-                <div style={{ height: 25 }}></div>
+            </>
+        );
+
+        const editorComponents = (
+            <>
                 <h1>Editor</h1>
                 {errorAlert}
                 <Collapse accordion activeKey={this.state.activeKey}>
@@ -122,6 +130,22 @@ class Commander extends React.Component {
                 </Collapse>
                 <div style={{ height: 25 }}></div>
                 <Button type='primary' onClick={this.addFeature}>Create new Feature</Button>
+            </>
+        );
+
+        const displayComponent = (this.state.visibleComponent === EDITOR) ? editorComponents : viewerComponents;
+
+        return (
+            <div className='Commander'>
+                <Space>
+                    <PageHeader title='Commander' />
+                    <div style={{float: 'right'}}>
+                        <div>View EDITOR: </div>
+                        <Switch onChange={this.toggleVisibleComponent} />
+                    </div>
+                </Space>
+                <div style={{ height: 25 }}></div>
+                {displayComponent}
                 <div style={{ height: 25 }}></div>
             </div>
         );
@@ -225,6 +249,12 @@ class Commander extends React.Component {
         }
         this.setState({
             activeKey: clickedKey
+        });
+    }
+
+    toggleVisibleComponent() {
+        this.setState({
+            visibleComponent: (this.state.visibleComponent === EDITOR) ? VIEWER : EDITOR
         });
     }
 }
