@@ -2,12 +2,12 @@
 
 Electron app.
 
-Commonly used commands, like rsync scripts for HDD backups, or for encrypted container mounting etc. can be stored in json config files, and this app provides a GUI for the same.
+Frequently used commands, like rsync scripts for HDD backups, or for encrypted container mounting etc. can be stored in json config files, and this app provides a GUI for the same.
 
 Features:
 ---------
-1. Create/Update/View Json config
-2. Execute the command
+1. Create/Update/View Json config with commands logically grouped into 'Features'
+2. Execute the commands
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -19,18 +19,21 @@ In the project directory, you can run:
 
 Runs the app in the development mode.
 
-The page will reload when you make changes.
+The app will reload when you make changes.
 You may also see any lint errors in the console.
+In the background, frontend react app will be served in localhost:3000 which the electron app renders.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.
+Builds the react app for production to the `build` folder.
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
 The build is minified and the filenames include the hashes.
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### `npm run dist`
+
+Uses electron-builder to build an installer for the app to the `out` folder.
+React production build is done first, and that build is used to create the electron app installer.
 
 ### `npm run eject`
 
