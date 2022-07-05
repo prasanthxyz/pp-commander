@@ -153,7 +153,7 @@ class Commander extends React.Component {
 
     changeFeatureName(featureIndex, newFeatureName) {
         const errorText = (
-            this.state.originalFeatures[featureIndex].name != newFeatureName
+            this.state.originalFeatures[featureIndex].name !== newFeatureName
             && this.state.originalFeatures.map(f => f.name).includes(newFeatureName)
         )
             ? 'Feature name already exists'
@@ -172,8 +172,8 @@ class Commander extends React.Component {
         const oldName = this.state.originalFeatures[featureIndex].name;
         const newName = this.state.features[featureIndex].name;
         if(
-            this.state.originalFeatures[featureIndex].name != newName
-            && this.state.originalFeatures.map(f => f.name).includes(newName) || newName === ''
+            (this.state.originalFeatures[featureIndex].name !== newName
+            && this.state.originalFeatures.map(f => f.name).includes(newName)) || newName === ''
         ) {
             return;
         }

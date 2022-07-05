@@ -66,6 +66,10 @@
       "target": "nsis",
       "icon": "src/icons/win/icon.ico"
     },
+    "mac": {
+      "target": "dmg",
+      "icon": "src/icons/mac/icon.icns"
+    },
     "directories": {
       "output": "out"
     }

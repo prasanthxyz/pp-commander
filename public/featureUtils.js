@@ -1,7 +1,9 @@
 const fs = require('fs');
+const path = require('path');
+const os = require('os');
 const { exec } = require('child_process')
 
-const featureDir = 'C:\\commander-features';
+const featureDir = path.join(os.homedir(), 'commander-features');
 
 exports.writeFeature = (featureName, data) => {
     try {
